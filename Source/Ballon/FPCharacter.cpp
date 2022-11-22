@@ -7,24 +7,26 @@
 // Sets default values
 AFPCharacter::AFPCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	FPCamera = CreateDefaultSubobject<UCameraComponent>("Camera");
+	FPCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	check(FPCamera != nullptr);
 	FPCamera->SetupAttachment(GetRootComponent());
-	FPCamera->SetRelativeLocation(FVector(0.f, 0.f, BaseEyeHeight + 45.f));
+	FPCamera->SetRelativeLocation(FVector(0.f, 0.f, BaseEyeHeight));
 	FPCamera->bUsePawnControlRotation = true;
 
 	// Setup the arms-n-hands mesh that should follow camera and only be visible to player
-	FPMesh = CreateDefaultSubobject<USkeletalMeshComponent>("FPMesh");
+	FPMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FPMesh"));
 	check(FPMesh != nullptr);
 	FPMesh->SetupAttachment(FPCamera);
 	FPMesh->SetOnlyOwnerSee(true);
 	FPMesh->CastShadow = false;
 	FPMesh->bCastDynamicShadow = false;
-
 	GetMesh()->SetOwnerNoSee(true);
+
+	ProjectileSpawn = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawn"));
+	ProjectileSpawn->SetupAttachment(FPCamera);
 }
 
 // Called when the game starts or when spawned
@@ -47,7 +49,12 @@ void AFPCharacter::Tick(const float DeltaTime)
 	check(GEngine != nullptr);
 	const float Length = (Movement * MoveSpeed).Length();
 	GEngine->AddOnScreenDebugMessage(23, 1.0f, FColor::Emerald,
-		FString::Printf(TEXT("Speed: %.3f"), Length));
+	                                 FString::Printf(TEXT("Speed: %.3f"), Length));
+
+	if (bCharging)
+	{
+		ShotCurrCharge = FMath::Min(ShotMaxSpeed, ShotCurrCharge + ShotChargeRate * DeltaTime);
+	}
 }
 
 // Called to bind functionality to input
@@ -57,9 +64,13 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AFPCharacter::SetForwardMovement);
 	PlayerInputComponent->BindAxis(TEXT("StrafeRight"), this, &AFPCharacter::SetStrafeMovement);
-	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &AFPCharacter::Jump);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AFPCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &AFPCharacter::AddControllerYawInput);
+
+	// Actions
+	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &AFPCharacter::Jump);
+	PlayerInputComponent->BindAction(TEXT("Fire"), EInputEvent::IE_Pressed, this, &AFPCharacter::StartShotCharge);
+	PlayerInputComponent->BindAction(TEXT("Fire"), EInputEvent::IE_Released, this, &AFPCharacter::ReleaseShot);
 }
 
 void AFPCharacter::SetForwardMovement(const float Amount)
@@ -70,4 +81,27 @@ void AFPCharacter::SetForwardMovement(const float Amount)
 void AFPCharacter::SetStrafeMovement(const float Amount)
 {
 	Movement.Y = Amount;
+}
+
+void AFPCharacter::StartShotCharge()
+{
+	ShotCurrCharge = ShotMinSpeed;
+	bCharging = true;
+}
+
+
+void AFPCharacter::ReleaseShot()
+{
+	const FTransform Transform = FTransform(ProjectileSpawn->GetComponentRotation(), ProjectileSpawn->GetComponentLocation());
+	AShot* SpawnedShot = GetWorld()->SpawnActorDeferred<AShot>(ClassShot, Transform, this);
+	check(SpawnedShot != nullptr);
+	SpawnedShot->SetInitAndMaxTravelSpeed(ShotCurrCharge);
+	SpawnedShot->SetGravity(0.f);
+	SpawnedShot->SetInstigator(GetInstigator());
+	SpawnedShot->FinishSpawning(Transform);
+
+	UE_LOG(LogTemp, Display, TEXT("Fired shot with speed: %.1f"), ShotCurrCharge);
+
+	ShotCurrCharge = ShotMinSpeed;
+	bCharging = false;
 }

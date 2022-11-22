@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Shot.h"
 #include "GameFramework/Character.h"
 #include "FPCharacter.generated.h"
 
@@ -22,6 +23,9 @@ protected:
 	// This is for the arms-n-hands mesh visible only to player
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* FPMesh;
+
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* ProjectileSpawn;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -34,6 +38,26 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Movement")
 	float JumpStrength = 150.f;
 
+
+	// PROJECTILES
+
+	UPROPERTY(EditAnywhere, Category="Projectiles")
+	TSubclassOf<AShot> ClassShot;
+
+	// If no charge
+	UPROPERTY(EditAnywhere, Category="Projectiles")
+	float ShotMaxSpeed = 10000.f;
+
+	// If max charge
+	UPROPERTY(EditAnywhere, Category="Projectiles")
+	float ShotMinSpeed = 1000.f;
+	float ShotCurrCharge = ShotMinSpeed;
+	
+	UPROPERTY(EditAnywhere, Category="Projectiles")
+	float ShotFullChargeSeconds = 2.f;
+	float ShotChargeRate = (ShotMaxSpeed - ShotMinSpeed) / ShotFullChargeSeconds;
+	bool bCharging = false;
+
 public:	
 	// Called every frame
 	virtual void Tick(const float DeltaTime) override;
@@ -43,4 +67,8 @@ public:
 
 	void SetForwardMovement(const float Amount);
 	void SetStrafeMovement(const float Amount);
+
+	// Actions
+	void ReleaseShot();
+	void StartShotCharge();
 };
