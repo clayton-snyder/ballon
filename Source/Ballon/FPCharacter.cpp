@@ -43,13 +43,13 @@ void AFPCharacter::Tick(const float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	Movement.Normalize();
-	AddActorLocalOffset(Movement * MoveSpeed);
+	// Movement.Normalize();
+	// AddActorLocalOffset(Movement * MoveSpeed);
 
 	check(GEngine != nullptr);
-	const float Length = (Movement * MoveSpeed).Length();
+	// const float Length = (Movement * MoveSpeed).Length();
 	GEngine->AddOnScreenDebugMessage(23, 1.0f, FColor::Emerald,
-	                                 FString::Printf(TEXT("Speed: %.3f"), Length));
+	                                 FString::Printf(TEXT("Speed: %.3f"), GetVelocity().Length()));
 
 	if (bCharging)
 	{
@@ -75,12 +75,14 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AFPCharacter::SetForwardMovement(const float Amount)
 {
-	Movement.X = Amount;
+	// Movement.X = Amount;
+	AddMovementInput(GetActorForwardVector(), Amount);
 }
 
 void AFPCharacter::SetStrafeMovement(const float Amount)
 {
-	Movement.Y = Amount;
+	// Movement.Y = Amount;
+	AddMovementInput(GetActorRightVector(), Amount);
 }
 
 void AFPCharacter::StartShotCharge()
