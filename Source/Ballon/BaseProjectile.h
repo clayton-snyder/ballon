@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Constants.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "Components/SphereComponent.h"
 #include "BaseProjectile.generated.h"
 
 UCLASS()
@@ -16,9 +16,6 @@ class BALLON_API ABaseProjectile : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ABaseProjectile();
-
-	UPROPERTY(VisibleAnywhere)
-	USphereComponent* CollisionComponent;
 
 protected:
 	// Called when the game starts or when spawned
@@ -34,6 +31,9 @@ protected:
 	UPROPERTY()
 	float DestroyAfterTravelDist = 100000.f;
 	FVector StartLoc;
+
+	UPROPERTY(EditAnywhere)
+	TEnumAsByte<GameLogic::EColor> Color;
 
 	UFUNCTION()
 	virtual void OnHit(
@@ -52,5 +52,8 @@ public:
 
 	// This will have no effect if called after the Actor is spawned. Call before FinishSpawning().
 	float SetGravity(float Gravity);
+	
+	GameLogic::EColor GetColor() const;
+	virtual void SetColor(const GameLogic::EColor InColor);
 
 };

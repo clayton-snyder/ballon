@@ -17,6 +17,11 @@ public:
 	AFPCharacter();
 
 protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	
+	////  STRUCTURE  ////
 	UPROPERTY(VisibleAnywhere)
 	class UCameraComponent* FPCamera;
 
@@ -26,24 +31,26 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* ProjectileSpawn;
+	//////////////////////////////////////////////////////////////////////
+
+
+
+	////  ATTRIBUTES  ////
+	// UPROPERTY(EditAnywhere, Category="Movement")
+	// float MoveSpeed = 15.f;
+	//
+	// UPROPERTY(EditAnywhere, Category="Movement")
+	// float JumpStrength = 150.f;
+	//////////////////////////////////////////////////////////////////////
+
 	
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	FVector Movement;
-
-	UPROPERTY(EditAnywhere, Category="Movement")
-	float MoveSpeed = 15.f;
-
-	UPROPERTY(EditAnywhere, Category="Movement")
-	float JumpStrength = 150.f;
-
-
-	// PROJECTILES
-
+	//// PROJECTILES  ////
 	UPROPERTY(EditAnywhere, Category="Projectiles")
 	TSubclassOf<AShot> ClassShot;
 
+	UPROPERTY(EditAnywhere, Category="Projectiles")
+	TEnumAsByte<GameLogic::EColor> ProjectileColor = GameLogic::EColor::Green;
+	
 	// If no charge
 	UPROPERTY(EditAnywhere, Category="Projectiles")
 	float ShotMaxSpeed = 10000.f;

@@ -100,9 +100,11 @@ void AFPCharacter::ReleaseShot()
 	SpawnedShot->SetInitAndMaxTravelSpeed(ShotCurrCharge);
 	SpawnedShot->SetGravity(0.f);
 	SpawnedShot->SetInstigator(GetInstigator());
+	SpawnedShot->SetColor(ProjectileColor);
 	SpawnedShot->FinishSpawning(Transform);
-
-	UE_LOG(LogTemp, Display, TEXT("Fired shot with speed: %.1f"), ShotCurrCharge);
+	
+	UE_LOG(LogTemp, Display, TEXT("Fired %s shot with speed: %.1f"),
+		*FUtil::EColorToString(SpawnedShot->GetColor()), ShotCurrCharge);
 
 	ShotCurrCharge = ShotMinSpeed;
 	bCharging = false;

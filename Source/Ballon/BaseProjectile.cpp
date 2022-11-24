@@ -2,6 +2,7 @@
 
 
 #include "BaseProjectile.h"
+#include "Components/SphereComponent.h"
 
 // Sets default values
 ABaseProjectile::ABaseProjectile()
@@ -14,10 +15,6 @@ ABaseProjectile::ABaseProjectile()
 	RootComponent = Mesh;
 
 	Movement = CreateDefaultSubobject<UProjectileMovementComponent>("Movement");
-
-	CollisionComponent = CreateDefaultSubobject<USphereComponent>("SphereTest");
-	CollisionComponent->InitSphereRadius(15.f);
-	CollisionComponent->BodyInstance;
 }
 
 // Called when the game starts or when spawned
@@ -66,4 +63,15 @@ float ABaseProjectile::SetGravity(float Gravity)
 {
 	Movement->ProjectileGravityScale = Gravity;
 	return Gravity;
+}
+
+GameLogic::EColor ABaseProjectile::GetColor() const
+{
+	return this->Color;
+}
+
+void ABaseProjectile::SetColor(const GameLogic::EColor InColor)
+{
+	this->Color = InColor;
+	UE_LOG(LogTemp, Display, TEXT("SetColor called in BaseProjectile"));
 }

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "BaseProjectile.h"
-#include "Constants.h"
 #include "Shot.generated.h"
 
 /**
@@ -18,14 +17,9 @@ class BALLON_API AShot : public ABaseProjectile
 public:
 	AShot();
 
-	EGameLogic::EGLColor GetColor() const;
-	void SetColor(const EGameLogic::EGLColor InColor);
-
+	virtual void SetColor(const GameLogic::EColor InColor) override;
 	
 protected:
-	UPROPERTY(EditAnywhere)
-	TEnumAsByte<EGameLogic::EGLColor> Color = EGameLogic::Red;
-	
 	void BeginPlay() override;
 
 	void OnHit(
@@ -34,5 +28,8 @@ protected:
 		UPrimitiveComponent* StruckComp,
 		FVector NormalImpulse,
 		const FHitResult &HitResult) override;
+
+private:
+	TMap<GameLogic::EColor, UMaterialInstance*> EColorToMatInst;
 	
 };
