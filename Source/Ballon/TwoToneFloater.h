@@ -22,6 +22,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
 	UMaterial* RedMat;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
+	UMaterial* ErrMat;
 	
 	
 	////////////// STRUCTURE //////////////
