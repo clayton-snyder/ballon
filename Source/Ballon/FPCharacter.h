@@ -33,20 +33,10 @@ protected:
 	USceneComponent* ProjectileSpawn;
 	//////////////////////////////////////////////////////////////////////
 
-
-
-	////  ATTRIBUTES  ////
-	// UPROPERTY(EditAnywhere, Category="Movement")
-	// float MoveSpeed = 15.f;
-	//
-	// UPROPERTY(EditAnywhere, Category="Movement")
-	// float JumpStrength = 150.f;
-	//////////////////////////////////////////////////////////////////////
-
 	
 	//// PROJECTILES  ////
 	UPROPERTY(EditAnywhere, Category="Projectiles")
-	TSubclassOf<AShot> ClassShot;
+	TSubclassOf<ABaseProjectile> ClassShot;
 
 	UPROPERTY(EditAnywhere, Category="Projectiles")
 	TEnumAsByte<GameLogic::EColor> ProjectileColor = GameLogic::EColor::Green;
@@ -78,4 +68,6 @@ public:
 	// Actions
 	void ReleaseShot();
 	void StartShotCharge();
+
+	void SetProjectileColor(GameLogic::EColor InColor);
 };

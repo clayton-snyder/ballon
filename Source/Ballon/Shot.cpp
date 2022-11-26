@@ -13,19 +13,19 @@ AShot::AShot()
 		Mesh->SetWorldScale3D(FVector(0.03f));
 	}
 
-	if (static ConstructorHelpers::FObjectFinder<UMaterial> RedMat(RedMatPath); RedMat.Succeeded())
+	if (static ConstructorHelpers::FObjectFinder<UMaterial> SRedMat(RedMatPath); SRedMat.Succeeded())
 	{
-		EColorToMatInst.Add(GameLogic::EColor::Red, UMaterialInstanceDynamic::Create(RedMat.Object, Mesh));
+		EColorToMatInst.Add(GameLogic::EColor::Red, UMaterialInstanceDynamic::Create(SRedMat.Object, Mesh));
 	} else UE_LOG(LogTemp, Error, TEXT("Could not load Red material!"));
 
-	if (static ConstructorHelpers::FObjectFinder<UMaterial> GreenMat(GreenMatPath); GreenMat.Succeeded())
+	if (static ConstructorHelpers::FObjectFinder<UMaterial> SGreenMat(GreenMatPath); SGreenMat.Succeeded())
 	{
-		EColorToMatInst.Add(GameLogic::EColor::Green, UMaterialInstanceDynamic::Create(GreenMat.Object, Mesh));
+		EColorToMatInst.Add(GameLogic::EColor::Green, UMaterialInstanceDynamic::Create(SGreenMat.Object, Mesh));
 	} else UE_LOG(LogTemp, Error, TEXT("Could not load Green material!"));
 
-	if (static ConstructorHelpers::FObjectFinder<UMaterial> ErrMat(ErrMatPath); ErrMat.Succeeded())
+	if (static ConstructorHelpers::FObjectFinder<UMaterial> SErrMat(ErrMatPath); SErrMat.Succeeded())
 	{
-		EColorToMatInst.Add(GameLogic::EColor::None, UMaterialInstanceDynamic::Create(ErrMat.Object, Mesh));
+		EColorToMatInst.Add(GameLogic::EColor::None, UMaterialInstanceDynamic::Create(SErrMat.Object, Mesh));
 	} else UE_LOG(LogTemp, Error, TEXT("Could not load Err material!"));
 	
 }

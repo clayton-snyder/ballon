@@ -91,11 +91,10 @@ void AFPCharacter::StartShotCharge()
 	bCharging = true;
 }
 
-
 void AFPCharacter::ReleaseShot()
 {
 	const FTransform Transform = FTransform(ProjectileSpawn->GetComponentRotation(), ProjectileSpawn->GetComponentLocation());
-	AShot* SpawnedShot = GetWorld()->SpawnActorDeferred<AShot>(ClassShot, Transform, this);
+	ABaseProjectile* SpawnedShot = GetWorld()->SpawnActorDeferred<ABaseProjectile>(ClassShot, Transform, this);
 	check(SpawnedShot != nullptr);
 	SpawnedShot->SetInitAndMaxTravelSpeed(ShotCurrCharge);
 	SpawnedShot->SetGravity(0.f);
@@ -108,4 +107,10 @@ void AFPCharacter::ReleaseShot()
 
 	ShotCurrCharge = ShotMinSpeed;
 	bCharging = false;
+}
+
+void AFPCharacter::SetProjectileColor(const GameLogic::EColor InColor)
+{
+	ProjectileColor = InColor;
+	UE_LOG(LogTemp, Display, TEXT("Changed ProjectilColor to %s"), *FUtil::EColorToString(ProjectileColor));
 }

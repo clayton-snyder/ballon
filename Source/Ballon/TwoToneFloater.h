@@ -17,7 +17,10 @@ public:
 	ATwoToneFloater();
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Color Logic")
+	bool AlreadyStruck = false;
+	class AFPCharacter* Player;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
 	UMaterial* GreenMat;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
@@ -45,8 +48,17 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Color Logic")
 	TEnumAsByte<GameLogic::EColor> ColorB;
-	
 	///////////////////////////////////////
+
+
+	UFUNCTION()
+	virtual void OnHit(
+		UPrimitiveComponent* HitComp,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		FVector NormalImpulse,
+		const FHitResult& HitResult);
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

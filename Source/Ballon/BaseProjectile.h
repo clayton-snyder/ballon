@@ -18,10 +18,18 @@ public:
 	ABaseProjectile();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
+	UMaterial* GreenMat;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
+	UMaterial* RedMat;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
+	UMaterial* ErrMat;
+	
+	
+	////////////// STRUCTURE //////////////
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* Mesh;
 
 	UPROPERTY(VisibleAnywhere)
@@ -32,8 +40,9 @@ protected:
 	float DestroyAfterTravelDist = 100000.f;
 	FVector StartLoc;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TEnumAsByte<GameLogic::EColor> Color;
+	///////////////////////////////////////
 
 	UFUNCTION()
 	virtual void OnHit(
@@ -42,6 +51,9 @@ protected:
 		UPrimitiveComponent* StruckComp,
 		FVector NormalImpulse,
 		const FHitResult &HitResult);
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
 public:	
 	// Called every frame

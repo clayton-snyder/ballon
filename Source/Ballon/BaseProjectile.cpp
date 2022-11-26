@@ -49,7 +49,10 @@ void ABaseProjectile::OnHit(
 	FVector NormalImpulse,
 	const FHitResult &HitResult)
 {
-	UE_LOG(LogTemp, Display, TEXT("OnHit from BaseProjectile. Struck: %s"), *StruckActor->GetActorNameOrLabel())
+	UE_LOG(LogTemp, Display, TEXT("OnHit from BaseProjectile. Struck: %s"), *StruckActor->GetActorNameOrLabel());
+
+	// Splatter
+	Destroy();
 }
 
 float ABaseProjectile::SetInitAndMaxTravelSpeed(const float Speed)
