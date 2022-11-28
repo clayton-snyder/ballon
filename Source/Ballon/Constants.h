@@ -48,4 +48,19 @@ struct FUtil
 
 		return "Unknown";
 	}
+
+	static FLinearColor EColorToFLinearColor(const GameLogic::EColor Color)
+	{
+		switch (Color)
+		{
+		case GameLogic::EColor::Green:
+			return FLinearColor(0.f, 1.f, 0.f, 1.f);
+		case GameLogic::EColor::Red:
+			return FLinearColor(1.f, 0.2f, 0.f, 1.f);
+		case GameLogic::EColor::None:
+			return FLinearColor::White;
+		}
+
+		return FLinearColor::Black;
+	}
 };

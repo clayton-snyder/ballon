@@ -52,7 +52,7 @@ void ABaseProjectile::OnHit(
 	UE_LOG(LogTemp, Display, TEXT("OnHit from BaseProjectile. Struck: %s"), *StruckActor->GetActorNameOrLabel());
 
 	// Splatter
-	Destroy();
+	//Destroy();
 }
 
 float ABaseProjectile::SetInitAndMaxTravelSpeed(const float Speed)

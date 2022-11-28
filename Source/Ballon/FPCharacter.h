@@ -17,18 +17,30 @@ public:
 	AFPCharacter();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
+	UMaterial* GreenMat;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
+	UMaterial* RedMat;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
+	UMaterial* ErrMat;
+	
 	
 	////  STRUCTURE  ////
 	UPROPERTY(VisibleAnywhere)
 	class UCameraComponent* FPCamera;
 
 	// This is for the arms-n-hands mesh visible only to player
-	UPROPERTY(VisibleAnywhere)
-	USkeletalMeshComponent* FPMesh;
+	// UPROPERTY(VisibleAnywhere)
+	// USkeletalMeshComponent* FPMesh;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UStaticMeshComponent* GunMesh;
+
+	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* GunNiagaraParticles;
+	
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* ProjectileSpawn;
 	//////////////////////////////////////////////////////////////////////
@@ -38,7 +50,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Projectiles")
 	TSubclassOf<ABaseProjectile> ClassShot;
 
-	UPROPERTY(EditAnywhere, Category="Projectiles")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectiles")
 	TEnumAsByte<GameLogic::EColor> ProjectileColor = GameLogic::EColor::Green;
 	
 	// If no charge
@@ -54,6 +66,13 @@ protected:
 	float ShotFullChargeSeconds = 2.f;
 	float ShotChargeRate = (ShotMaxSpeed - ShotMinSpeed) / ShotFullChargeSeconds;
 	bool bCharging = false;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateGunMeshColor();
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
 
 public:	
 	// Called every frame

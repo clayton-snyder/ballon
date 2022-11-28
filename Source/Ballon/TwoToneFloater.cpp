@@ -75,8 +75,8 @@ void ATwoToneFloater::OnHit(
 		{
 			UE_LOG(LogTemp, Error, TEXT("~~~~~~~~~~~~~PLAYER LOSE"));
 			// TODO: Play bad noise, restart level
+			UGameplayStatics::OpenLevel(this, TEXT("Sandbox"));
 		}
-
 		Destroy();
 	}
 

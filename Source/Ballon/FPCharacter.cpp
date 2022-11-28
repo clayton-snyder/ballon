@@ -2,7 +2,13 @@
 
 
 #include "FPCharacter.h"
+
 #include "Camera/CameraComponent.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "NiagaraSystem.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AFPCharacter::AFPCharacter()
@@ -16,14 +22,20 @@ AFPCharacter::AFPCharacter()
 	FPCamera->SetRelativeLocation(FVector(0.f, 0.f, BaseEyeHeight));
 	FPCamera->bUsePawnControlRotation = true;
 
-	// Setup the arms-n-hands mesh that should follow camera and only be visible to player
-	FPMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FPMesh"));
-	check(FPMesh != nullptr);
-	FPMesh->SetupAttachment(FPCamera);
-	FPMesh->SetOnlyOwnerSee(true);
-	FPMesh->CastShadow = false;
-	FPMesh->bCastDynamicShadow = false;
+	GunMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gun"));
+	GunMesh->SetupAttachment(FPCamera);
+
+
 	GetMesh()->SetOwnerNoSee(true);
+
+
+	// Setup the arms-n-hands mesh that should follow camera and only be visible to player
+	// FPMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FPMesh"));
+	// check(FPMesh != nullptr);
+	// FPMesh->SetupAttachment(FPCamera);
+	// FPMesh->SetOnlyOwnerSee(true);
+	// FPMesh->CastShadow = false;
+	// FPMesh->bCastDynamicShadow = false;
 
 	ProjectileSpawn = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawn"));
 	ProjectileSpawn->SetupAttachment(FPCamera);
@@ -93,7 +105,8 @@ void AFPCharacter::StartShotCharge()
 
 void AFPCharacter::ReleaseShot()
 {
-	const FTransform Transform = FTransform(ProjectileSpawn->GetComponentRotation(), ProjectileSpawn->GetComponentLocation());
+	const FTransform Transform = FTransform(ProjectileSpawn->GetComponentRotation(),
+	                                        ProjectileSpawn->GetComponentLocation());
 	ABaseProjectile* SpawnedShot = GetWorld()->SpawnActorDeferred<ABaseProjectile>(ClassShot, Transform, this);
 	check(SpawnedShot != nullptr);
 	SpawnedShot->SetInitAndMaxTravelSpeed(ShotCurrCharge);
@@ -101,16 +114,30 @@ void AFPCharacter::ReleaseShot()
 	SpawnedShot->SetInstigator(GetInstigator());
 	SpawnedShot->SetColor(ProjectileColor);
 	SpawnedShot->FinishSpawning(Transform);
-	
+
 	UE_LOG(LogTemp, Display, TEXT("Fired %s shot with speed: %.1f"),
-		*FUtil::EColorToString(SpawnedShot->GetColor()), ShotCurrCharge);
+	       *FUtil::EColorToString(SpawnedShot->GetColor()), ShotCurrCharge);
 
 	ShotCurrCharge = ShotMinSpeed;
 	bCharging = false;
+
+	// UGameplayStatics::SpawnEmitterAtLocation(this, GunParticles, ProjectileSpawn->GetComponentLocation());
+	// UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, GunNiagaraParticles, ProjectileSpawn->GetComponentLocation());
+	UNiagaraComponent* NiagaraComponent = UNiagaraFunctionLibrary::SpawnSystemAttached(
+		GunNiagaraParticles, GunMesh, TEXT("SocketMuzzleFlash"),
+		GunMesh->GetSocketLocation(TEXT("SocketMuzzleFlash")),
+		GunMesh->GetComponentRotation(),
+		EAttachLocation::Type::KeepWorldPosition,
+		true);
+
+	FLinearColor ParticleColor = FUtil::EColorToFLinearColor(ProjectileColor);
+	NiagaraComponent->SetNiagaraVariableLinearColor(FString("ParticleColor"), ParticleColor);
+	// NiagaraComponent->SetNiagaraVariableLinearColor(FString("ParticleColor"), FLinearColor::Orang);
 }
 
 void AFPCharacter::SetProjectileColor(const GameLogic::EColor InColor)
 {
 	ProjectileColor = InColor;
+	UpdateGunMeshColor();
 	UE_LOG(LogTemp, Display, TEXT("Changed ProjectilColor to %s"), *FUtil::EColorToString(ProjectileColor));
 }
