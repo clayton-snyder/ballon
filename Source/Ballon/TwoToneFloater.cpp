@@ -3,7 +3,7 @@
 
 #include "TwoToneFloater.h"
 #include "FPCharacter.h"
-
+#include "GI.h"
 #include "BaseProjectile.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -35,6 +35,9 @@ void ATwoToneFloater::BeginPlay()
 
 	Player = Cast<AFPCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
 	check(Player != nullptr);
+
+	GIRef = Cast<UGI>(GetGameInstance());
+	check(GIRef != nullptr);
 }
 
 // Called every frame
@@ -70,11 +73,13 @@ void ATwoToneFloater::OnHit(
 		if (Projectile->GetColor() == ColorA || Projectile->GetColor() == ColorB)
 		{
 			Player->SetProjectileColor(Projectile->GetColor() == ColorA ? ColorB : ColorA);
-			// TODO: Increment score, play noise
+			// TODO: Increment score
+			GIRef->PlayDingSound();
 		} else
 		{
+			GIRef->PlayFailSound();
 			UE_LOG(LogTemp, Error, TEXT("~~~~~~~~~~~~~PLAYER LOSE"));
-			// TODO: Play bad noise, restart level
+			// TODO: Track failures?
 			UGameplayStatics::OpenLevel(this, TEXT("Sandbox"));
 		}
 		Destroy();

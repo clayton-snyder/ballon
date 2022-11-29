@@ -5,7 +5,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "Particles/ParticleSystemComponent.h"
-#include "NiagaraSystem.h"
+#include "GI.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -48,6 +48,9 @@ void AFPCharacter::BeginPlay()
 
 	check(GEngine != nullptr);
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, "FPCharacter BeginPlay");
+
+	GIRef = Cast<UGI>(GetGameInstance());
+	check(GIRef != nullptr);
 }
 
 // Called every frame
@@ -105,6 +108,9 @@ void AFPCharacter::StartShotCharge()
 
 void AFPCharacter::ReleaseShot()
 {
+	// Play sound first to be as responsive as possible
+	GIRef->PlayShootSound();
+	
 	const FTransform Transform = FTransform(ProjectileSpawn->GetComponentRotation(),
 	                                        ProjectileSpawn->GetComponentLocation());
 	ABaseProjectile* SpawnedShot = GetWorld()->SpawnActorDeferred<ABaseProjectile>(ClassShot, Transform, this);
@@ -132,7 +138,6 @@ void AFPCharacter::ReleaseShot()
 
 	FLinearColor ParticleColor = FUtil::EColorToFLinearColor(ProjectileColor);
 	NiagaraComponent->SetNiagaraVariableLinearColor(FString("ParticleColor"), ParticleColor);
-	// NiagaraComponent->SetNiagaraVariableLinearColor(FString("ParticleColor"), FLinearColor::Orang);
 }
 
 void AFPCharacter::SetProjectileColor(const GameLogic::EColor InColor)

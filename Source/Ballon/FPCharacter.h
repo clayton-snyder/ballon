@@ -17,6 +17,10 @@ public:
 	AFPCharacter();
 
 protected:
+	////  REFS  ////
+	class UGI* GIRef;
+	
+	////  PROPERTIES  ////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
 	UMaterial* GreenMat;
 

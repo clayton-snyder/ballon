@@ -18,8 +18,13 @@ public:
 
 protected:
 	bool AlreadyStruck = false;
+
+	////////////// REFS //////////////
 	class AFPCharacter* Player;
-	
+	class UGI* GIRef;
+
+
+	////////////// PROPERTIES //////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
 	UMaterial* GreenMat;
 
