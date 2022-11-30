@@ -22,14 +22,19 @@ ATwoToneFloater::ATwoToneFloater()
 	MeshB = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshB"));
 	MeshB->SetupAttachment(Scene);
 
+	Tags.Add(UConstants::TagPoppable);
+}
 
+void ATwoToneFloater::TestBind()
+{
+	UE_LOG(LogTemp, Warning, TEXT("HOORAY IT WAS CALLED PLAYER DID SHOOT"));
 }
 
 // Called when the game starts or when spawned
 void ATwoToneFloater::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	MeshA->OnComponentHit.AddDynamic(this, &ATwoToneFloater::OnHit);
 	MeshB->OnComponentHit.AddDynamic(this, &ATwoToneFloater::OnHit);
 
@@ -38,6 +43,12 @@ void ATwoToneFloater::BeginPlay()
 
 	GIRef = Cast<UGI>(GetGameInstance());
 	check(GIRef != nullptr);
+
+	// FCallTestBindDelegate TestBindDelegate;
+	// TestBindDelegate.BindUObject(this, &ATwoToneFloater::TestBind);
+	
+	// Player->OnShotFired.Add(TestBindDelegate);
+
 }
 
 // Called every frame
@@ -54,6 +65,7 @@ void ATwoToneFloater::OnHit(
 		FVector NormalImpulse,
 		const FHitResult& HitResult)
 {
+	if (!OtherActor->ActorHasTag(UConstants::TagShot)) return;
 	if (AlreadyStruck)
 	{
 		UE_LOG(LogTemp, Display, TEXT("%s OnHit() was already hit, ignoring"), *GetActorNameOrLabel());
@@ -68,13 +80,14 @@ void ATwoToneFloater::OnHit(
 		UE_LOG(LogTemp, Display, TEXT("OnHit cast failed; %s not a ABaseProjectile."), *OtherActor->GetActorNameOrLabel());
 		return;
 	}
-	if (Projectile->ActorHasTag("Shot"))
+	if (Projectile->ActorHasTag(UConstants::TagShot))
 	{
 		if (Projectile->GetColor() == ColorA || Projectile->GetColor() == ColorB)
 		{
-			Player->SetProjectileColor(Projectile->GetColor() == ColorA ? ColorB : ColorA);
-			// TODO: Increment score
 			GIRef->PlayDingSound();
+			Player->SetProjectileColor(Projectile->GetColor() == ColorA ? ColorB : ColorA);
+			PoppedEvent.Broadcast();
+
 		} else
 		{
 			GIRef->PlayFailSound();
@@ -85,12 +98,12 @@ void ATwoToneFloater::OnHit(
 		Destroy();
 	}
 
-	if (Projectile->ActorHasTag("Grapple"))
+	if (Projectile->ActorHasTag(UConstants::TagGrapple))
 	{
 		// Stub...
 	}
 
-	if (Projectile->ActorHasTag("Grenade"))
+	if (Projectile->ActorHasTag(UConstants::TagStickyMine))
 	{
 		// Stub...
 	}

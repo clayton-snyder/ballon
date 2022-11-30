@@ -1,18 +1,13 @@
 ﻿#pragma once
+#include "Engine/DataTable.h"
 
 #include "Constants.generated.h"
 
-UCLASS()
-class UConstants : public UObject
-{
-	GENERATED_BODY()
-};
 
 inline const TCHAR* SpherePath = TEXT("'/Engine/EngineMeshes/Sphere.Sphere'");
 inline const TCHAR* RedMatPath = TEXT("'/Engine/MapTemplates/Materials/BasicAsset01.BasicAsset01'");
 inline const TCHAR* GreenMatPath = TEXT("'/Engine/MapTemplates/Materials/BasicAsset03.BasicAsset03'");
 inline const TCHAR* ErrMatPath = TEXT("'/Engine/EditorMeshes/ColorCalibrator/M_ColorGrid.M_ColorGrid'");
-
 
 #pragma region ENUMS
 
@@ -29,11 +24,33 @@ namespace GameLogic
 
 #pragma endregion ENUMS
 
-USTRUCT()
-struct FUtil
+UCLASS()
+class UConstants : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
-	
+
+public:
+	inline static const TCHAR* TagShot = TEXT("SHOT");
+	inline static const TCHAR* TagPoppable = TEXT("POPPABLE");
+	inline static const TCHAR* TagGrapple = TEXT("GRAPPLE");
+	inline static const TCHAR* TagStickyMine = TEXT("STICKY_MINE");
+
+
+	UFUNCTION(BlueprintCallable, Category = "BallonConstants")
+	static FName GetTagShot() { return FName(TagShot); }
+
+	UFUNCTION(BlueprintCallable, Category = "BallonConstants")
+	static FName GetTagPoppable() { return FName(TagPoppable); }
+
+	UFUNCTION(BlueprintCallable, Category = "BallonConstants")
+	static FName GetTagGrapple() { return FName(TagGrapple); }
+
+	UFUNCTION(BlueprintCallable, Category = "BallonConstants")
+	static FName GetTagStickyMine() { return FName(TagStickyMine); }
+
+
+	////////////// UTILITY //////////////
+	UFUNCTION(BlueprintCallable, Category = "BallonUtility")
 	static FString EColorToString(const GameLogic::EColor Color)
 	{
 		switch (Color)
@@ -49,6 +66,7 @@ struct FUtil
 		return "Unknown";
 	}
 
+	UFUNCTION(BlueprintCallable, Category = "BallonUtility")
 	static FLinearColor EColorToFLinearColor(const GameLogic::EColor Color)
 	{
 		switch (Color)

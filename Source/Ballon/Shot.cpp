@@ -27,13 +27,15 @@ AShot::AShot()
 	{
 		EColorToMatInst.Add(GameLogic::EColor::None, UMaterialInstanceDynamic::Create(SErrMat.Object, Mesh));
 	} else UE_LOG(LogTemp, Error, TEXT("Could not load Err material!"));
-	
 }
 
 void AShot::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Tags.Add(UConstants::TagShot);
+	Tags.Add(UConstants::TagPoppable);
+	
 	UE_LOG(LogTemp, Display, TEXT("BeginPlay finished."));
 }
 

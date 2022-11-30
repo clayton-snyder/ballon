@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "FPCharacter.generated.h"
 
+
 UCLASS()
 class BALLON_API AFPCharacter : public ACharacter
 {
@@ -15,6 +16,9 @@ class BALLON_API AFPCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AFPCharacter();
+
+	DECLARE_EVENT(AFPCharacter, FShotFiredEvent);
+	FShotFiredEvent OnShotFired;
 
 protected:
 	////  REFS  ////

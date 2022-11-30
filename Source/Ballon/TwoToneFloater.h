@@ -16,6 +16,14 @@ public:
 	// Sets default values for this actor's properties
 	ATwoToneFloater();
 
+	DECLARE_DELEGATE(FCallTestBindDelegate)
+	
+	UFUNCTION()
+	void TestBind();
+
+	DECLARE_EVENT(ATwoToneFloater, FTwoToneFloaterPoppedEvent)
+	FTwoToneFloaterPoppedEvent PoppedEvent;
+
 protected:
 	bool AlreadyStruck = false;
 

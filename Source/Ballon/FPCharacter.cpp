@@ -122,10 +122,12 @@ void AFPCharacter::ReleaseShot()
 	SpawnedShot->FinishSpawning(Transform);
 
 	UE_LOG(LogTemp, Display, TEXT("Fired %s shot with speed: %.1f"),
-	       *FUtil::EColorToString(SpawnedShot->GetColor()), ShotCurrCharge);
+	       *UConstants::EColorToString(SpawnedShot->GetColor()), ShotCurrCharge);
 
 	ShotCurrCharge = ShotMinSpeed;
 	bCharging = false;
+
+	OnShotFired.Broadcast();
 
 	// UGameplayStatics::SpawnEmitterAtLocation(this, GunParticles, ProjectileSpawn->GetComponentLocation());
 	// UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, GunNiagaraParticles, ProjectileSpawn->GetComponentLocation());
@@ -136,7 +138,7 @@ void AFPCharacter::ReleaseShot()
 		EAttachLocation::Type::KeepWorldPosition,
 		true);
 
-	FLinearColor ParticleColor = FUtil::EColorToFLinearColor(ProjectileColor);
+	FLinearColor ParticleColor = UConstants::EColorToFLinearColor(ProjectileColor);
 	NiagaraComponent->SetNiagaraVariableLinearColor(FString("ParticleColor"), ParticleColor);
 }
 
@@ -144,5 +146,5 @@ void AFPCharacter::SetProjectileColor(const GameLogic::EColor InColor)
 {
 	ProjectileColor = InColor;
 	UpdateGunMeshColor();
-	UE_LOG(LogTemp, Display, TEXT("Changed ProjectilColor to %s"), *FUtil::EColorToString(ProjectileColor));
+	UE_LOG(LogTemp, Display, TEXT("Changed ProjectilColor to %s"), *UConstants::EColorToString(ProjectileColor));
 }
