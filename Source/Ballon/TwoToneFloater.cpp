@@ -2,6 +2,8 @@
 
 
 #include "TwoToneFloater.h"
+
+#include "ALevelScorer.h"
 #include "FPCharacter.h"
 #include "GI.h"
 #include "BaseProjectile.h"
@@ -41,13 +43,18 @@ void ATwoToneFloater::BeginPlay()
 	Player = Cast<AFPCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
 	check(Player != nullptr);
 
-	GIRef = Cast<UGI>(GetGameInstance());
-	check(GIRef != nullptr);
+	GI = Cast<UGI>(GetGameInstance());
+	check(GI != nullptr);
 
-	// FCallTestBindDelegate TestBindDelegate;
-	// TestBindDelegate.BindUObject(this, &ATwoToneFloater::TestBind);
-	
-	// Player->OnShotFired.Add(TestBindDelegate);
+	TArray<AActor*> Scorer;
+	UGameplayStatics::GetAllActorsOfClass(this, ALevelScorer::StaticClass(), Scorer);
+	if (Scorer.Num() != 1)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Found %d LevelScorers, expected exactly 1."), Scorer.Num());
+	}
+
+	LevelScorer = Cast<ALevelScorer>(Scorer[0]);
+	check(LevelScorer != nullptr);
 
 }
 
@@ -84,13 +91,12 @@ void ATwoToneFloater::OnHit(
 	{
 		if (Projectile->GetColor() == ColorA || Projectile->GetColor() == ColorB)
 		{
-			GIRef->PlayDingSound();
+			GI->PlayDingSound();
 			Player->SetProjectileColor(Projectile->GetColor() == ColorA ? ColorB : ColorA);
-			PoppedEvent.Broadcast();
-
+			LevelScorer->IncrementNumPopped();
 		} else
 		{
-			GIRef->PlayFailSound();
+			GI->PlayFailSound();
 			UE_LOG(LogTemp, Error, TEXT("~~~~~~~~~~~~~PLAYER LOSE"));
 			// TODO: Track failures?
 			UGameplayStatics::OpenLevel(this, TEXT("Sandbox"));

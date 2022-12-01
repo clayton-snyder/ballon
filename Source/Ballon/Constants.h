@@ -1,5 +1,8 @@
 ﻿#pragma once
+#include "Blueprint/UserWidget.h"
 #include "Engine/DataTable.h"
+#include "Kismet/GameplayStatics.h"
+#include "ALevelScorer.h"
 
 #include "Constants.generated.h"
 

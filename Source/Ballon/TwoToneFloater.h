@@ -21,15 +21,13 @@ public:
 	UFUNCTION()
 	void TestBind();
 
-	DECLARE_EVENT(ATwoToneFloater, FTwoToneFloaterPoppedEvent)
-	FTwoToneFloaterPoppedEvent PoppedEvent;
-
 protected:
 	bool AlreadyStruck = false;
 
 	////////////// REFS //////////////
 	class AFPCharacter* Player;
-	class UGI* GIRef;
+	class UGI* GI;
+	class ALevelScorer* LevelScorer;
 
 
 	////////////// PROPERTIES //////////////

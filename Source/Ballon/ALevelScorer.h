@@ -10,16 +10,20 @@ USTRUCT(BlueprintType)
 struct FLevelScore
 {
 	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly)
 	float TimeElapsed;
+
+	UPROPERTY(BlueprintReadOnly)
 	int ShotsFired;
+
+	UPROPERTY(BlueprintReadOnly)
 	int NumPopped;
+
+	UPROPERTY(BlueprintReadOnly)
 	int TotalPoppable;
 
-	FLevelScore() {}
-	float GetCompletionPercent() const
-	{
-		return static_cast<float>(NumPopped) / TotalPoppable;
-	}
+	FLevelScore() { TimeElapsed = -1.f; ShotsFired = -1.f; NumPopped = -1.f; TotalPoppable = -1.f;}
 };
 
 UCLASS()
@@ -34,21 +38,22 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FLevelScore GetScore() const;
 
+	UFUNCTION()
+	void IncrementShotsFired();
+	
+	UFUNCTION()
+	void IncrementNumPopped();
+
 protected:
 	DECLARE_DELEGATE(FIncrementShotsFiredDelegate);
 	DECLARE_DELEGATE(FIncrementNumPoppedDelegate);
 	
 	class AFPCharacter* Player;
+	
 	float TimeElapsed = 0.f;
 	int ShotsFired = 0;
 	int NumPopped = 0;
 	int TotalPoppable = 0;
-
-	UFUNCTION()
-	void IncrementShotsFired();
-
-	UFUNCTION()
-	void IncrementNumPopped();
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
