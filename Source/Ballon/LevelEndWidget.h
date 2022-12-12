@@ -16,14 +16,34 @@ class BALLON_API ULevelEndWidget : public UUserWidget
 
 public:
 	UPROPERTY(BlueprintReadOnly)
-	FString AccuracyText;
-
-	UPROPERTY(BlueprintReadOnly)
-	FString CompletionText;
-
-	UPROPERTY(BlueprintReadOnly)
-	FString TimeElapsedText;
-
+	bool AllowNextLevel;
+	
 	UPROPERTY(BlueprintReadOnly)
 	FName NextLevelName;
+
+
+
+	UPROPERTY(BlueprintReadOnly)
+	bool PassedBalloons;
+
+	UPROPERTY(BlueprintReadOnly)
+	FString TextBalloons;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool PassedTime;
+
+	UPROPERTY(BlueprintReadOnly)
+	FString TextTime;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool PassedColor;
+
+	UPROPERTY(BlueprintReadOnly)
+	FString TextColor;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool PassedAccuracy;
+
+	UPROPERTY(BlueprintReadOnly)
+	FString TextAccuracy;
 };

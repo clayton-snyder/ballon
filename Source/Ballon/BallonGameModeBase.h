@@ -8,9 +8,18 @@
 #include "GameFramework/GameModeBase.h"
 #include "BallonGameModeBase.generated.h"
 
-/**
- * 
- */
+
+USTRUCT(BlueprintType)
+struct FLevelReqs
+{
+	GENERATED_BODY()
+	float Accuracy;
+	float Time;
+
+	FLevelReqs() { Accuracy = -1.f; Time = -1.f; }
+	FLevelReqs(const float &InAccuracy, const float &InTime) { Accuracy = InAccuracy, Time = InTime; }
+};
+
 UCLASS()
 class BALLON_API ABallonGameModeBase : public AGameModeBase
 {
@@ -20,11 +29,16 @@ class BALLON_API ABallonGameModeBase : public AGameModeBase
 	virtual void StartPlay() override;
 
 public:
+
+	
 	UFUNCTION(BlueprintCallable)
-	void DisplayLevelEndWidget(FLevelScore Score);
+	void DisplayLevelEndWidget(const FLevelScore &Score, bool bPlayerMatchColor);
 
 	UFUNCTION(BlueprintCallable)
-	FName GetNextLevel(FString CurrLevel);
+	FName GetNextLevel(const FString &CurrLevel);
+	
+	UFUNCTION(BlueprintCallable)
+	FLevelReqs GetLevelReqs(const FString &LevelName);
 
 protected:
 	// UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")

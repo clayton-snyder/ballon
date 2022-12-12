@@ -14,15 +14,27 @@ void ABallonGameModeBase::StartPlay()
 	GEngine->AddOnScreenDebugMessage(-1, 500.0f, FColor::Yellow, TEXT("This is BallonGameMode."));
 }
 
-void ABallonGameModeBase::DisplayLevelEndWidget(FLevelScore Score)
+void ABallonGameModeBase::DisplayLevelEndWidget(const FLevelScore& Score, bool bPlayerMatchColor)
 {
+	UE_LOG(LogTemp, Warning, TEXT("bPlayerMatchColor: %s"), (bPlayerMatchColor ? TEXT("true") : TEXT("false")));
+	const float Accuracy = Score.ShotsFired == 0 ? 0.0f : static_cast<float>(Score.NumPopped) / Score.ShotsFired * 100;
 	ULevelEndWidget* NewWidget = CreateWidget<ULevelEndWidget>(GetWorld(), LevelEndClass);
-	NewWidget->AccuracyText = FString::Printf(
-		TEXT("%.1f%% Accuracy"),
-		Score.ShotsFired == 0 ? 0.0f : static_cast<float>(Score.NumPopped) / Score.ShotsFired * 100);
-	NewWidget->CompletionText = FString::Printf(TEXT("%d out of %d"), Score.NumPopped, Score.TotalPoppable);
-	NewWidget->TimeElapsedText = FString::Printf(TEXT("%.2fs"), Score.TimeElapsed);
+	
+	const FLevelReqs LevelReqs = GetLevelReqs(UGameplayStatics::GetCurrentLevelName(this));
+	NewWidget->PassedBalloons = Score.NumPopped == Score.TotalPoppable;
+	NewWidget->PassedColor = bPlayerMatchColor;
+	NewWidget->PassedTime = Score.TimeElapsed <= LevelReqs.Time;
+	NewWidget->PassedAccuracy = Accuracy >= LevelReqs.Accuracy;
+
+	NewWidget->AllowNextLevel =
+		(NewWidget->PassedBalloons && NewWidget->PassedColor && NewWidget->PassedTime && NewWidget->PassedAccuracy);
+	
+	NewWidget->TextBalloons = FString::Printf(TEXT("Balloons: %d/%d"), Score.NumPopped, Score.TotalPoppable);
+	NewWidget->TextTime = FString::Printf(TEXT("Time: %.1fs"), Score.TimeElapsed);
+	NewWidget->TextColor = FString::Printf(TEXT("Color"));
+	NewWidget->TextAccuracy = FString::Printf(TEXT("Accuracy: %.1f%%"), Accuracy);
 	NewWidget->AddToViewport();
+
 	APlayerController* Controller = UGameplayStatics::GetPlayerController(this, 0);
 	UGameplayStatics::GetPlayerPawn(this, 0)->DisableInput(Controller);
 	UGameplayStatics::SetGamePaused(this, true);
@@ -31,10 +43,22 @@ void ABallonGameModeBase::DisplayLevelEndWidget(FLevelScore Score)
 	NewWidget->SetFocus();
 }
 
-FName ABallonGameModeBase::GetNextLevel(FString CurrLevel)
+FName ABallonGameModeBase::GetNextLevel(const FString& CurrLevel)
 {
 	if (CurrLevel == "Sandbox") return "Sandbox2";
-	if (CurrLevel == "Sandbox2") return "Sandbox";
+	if (CurrLevel == "Sandbox2") return "Forest";
+	if (CurrLevel == "Forest") return "Sandbox";
 	UE_LOG(LogTemp, Error, TEXT("UNKNOWN LEVEL NAME: %s"), *CurrLevel);
 	return "UNKNOWN";
+}
+
+
+FLevelReqs ABallonGameModeBase::GetLevelReqs(const FString& LevelName)
+{
+	if (LevelName == "Sandbox") return FLevelReqs(100.f, 10.f);
+	if (LevelName == "Sandbox2") return FLevelReqs(100.f, 7.5f);
+	if (LevelName == "Forest") return FLevelReqs(90.f, 15.f);
+
+	UE_LOG(LogTemp, Fatal, TEXT("Missing GetLevelReqs case for LevelName: %s"), *LevelName);
+	return FLevelReqs(-1.f, -1.f);
 }

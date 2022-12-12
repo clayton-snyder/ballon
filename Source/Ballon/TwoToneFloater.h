@@ -17,9 +17,6 @@ public:
 	ATwoToneFloater();
 
 	DECLARE_DELEGATE(FCallTestBindDelegate)
-	
-	UFUNCTION()
-	void TestBind();
 
 protected:
 	bool AlreadyStruck = false;

@@ -27,11 +27,6 @@ ATwoToneFloater::ATwoToneFloater()
 	Tags.Add(UConstants::TagPoppable);
 }
 
-void ATwoToneFloater::TestBind()
-{
-	UE_LOG(LogTemp, Warning, TEXT("HOORAY IT WAS CALLED PLAYER DID SHOOT"));
-}
-
 // Called when the game starts or when spawned
 void ATwoToneFloater::BeginPlay()
 {
@@ -99,7 +94,7 @@ void ATwoToneFloater::OnHit(
 			GI->PlayFailSound();
 			UE_LOG(LogTemp, Error, TEXT("~~~~~~~~~~~~~PLAYER LOSE"));
 			// TODO: Track failures?
-			UGameplayStatics::OpenLevel(this, TEXT("Sandbox"));
+			UGameplayStatics::OpenLevel(this, FName(UGameplayStatics::GetCurrentLevelName(this)));
 		}
 		Destroy();
 	}
