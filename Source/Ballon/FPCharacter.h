@@ -97,6 +97,7 @@ public:
 
 	void SetForwardMovement(const float Amount);
 	void SetStrafeMovement(const float Amount);
+	
 
 	// Actions
 	void ReleaseShot();
