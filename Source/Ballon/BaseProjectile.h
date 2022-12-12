@@ -18,11 +18,17 @@ public:
 	ABaseProjectile();
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Color Logic")
 	UMaterial* GreenMat;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Color Logic")
 	UMaterial* RedMat;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Color Logic")
+	UMaterial* BlueMat;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Color Logic")
+	UMaterial* WhiteMat;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
 	UMaterial* ErrMat;

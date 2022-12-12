@@ -36,6 +36,7 @@ void ALevelScorer::BeginPlay()
 	UE_LOG(LogTemp, Display, TEXT("Init TotalPoppable to: %d"), TotalPoppable);
 
 	TimeElapsed = 0.f;
+	UpdatePlayerHUD();
 }
 
 void ALevelScorer::IncrementShotsFired()
@@ -48,6 +49,7 @@ void ALevelScorer::IncrementNumPopped()
 {
 	NumPopped++;
 	UE_LOG(LogTemp, Display, TEXT("Incremented NumPopped"));
+	UpdatePlayerHUD();
 }
 
 
@@ -67,4 +69,11 @@ void ALevelScorer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	TimeElapsed += DeltaTime;
+}
+
+void ALevelScorer::UpdatePlayerHUD()
+{
+	FString Progress = FString::FromInt(NumPopped) + "/" + FString::FromInt(TotalPoppable);
+	FString LevelName = UGameplayStatics::GetCurrentLevelName(this);
+	Player->UpdateHUD(Progress, LevelName);
 }

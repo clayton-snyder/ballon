@@ -28,15 +28,6 @@ AFPCharacter::AFPCharacter()
 
 	GetMesh()->SetOwnerNoSee(true);
 
-
-	// Setup the arms-n-hands mesh that should follow camera and only be visible to player
-	// FPMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FPMesh"));
-	// check(FPMesh != nullptr);
-	// FPMesh->SetupAttachment(FPCamera);
-	// FPMesh->SetOnlyOwnerSee(true);
-	// FPMesh->CastShadow = false;
-	// FPMesh->bCastDynamicShadow = false;
-
 	ProjectileSpawn = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawn"));
 	ProjectileSpawn->SetupAttachment(FPCamera);
 }

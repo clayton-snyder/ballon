@@ -25,11 +25,17 @@ protected:
 	class UGI* GIRef;
 	
 	////  PROPERTIES  ////
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Color Logic")
 	UMaterial* GreenMat;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Color Logic")
 	UMaterial* RedMat;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Color Logic")
+	UMaterial* BlueMat;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Color Logic")
+	UMaterial* WhiteMat;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Color Logic")
 	UMaterial* ErrMat;
@@ -97,4 +103,7 @@ public:
 	void StartShotCharge();
 
 	void SetProjectileColor(GameLogic::EColor InColor);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateHUD(const FString &PoppedProgress, const FString &LevelName);
 };

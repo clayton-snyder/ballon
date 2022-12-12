@@ -22,6 +22,8 @@ namespace GameLogic
 		None,
 		Red,
 		Green,
+		Blue,
+		White
 	};
 }
 
@@ -62,6 +64,10 @@ public:
 			return "Green";
 		case GameLogic::EColor::Red:
 			return "Red";
+		case GameLogic::EColor::Blue:
+			return "Blue";
+		case GameLogic::EColor::White:
+			return "White";
 		case GameLogic::EColor::None:
 			return "None";
 		}
@@ -77,7 +83,11 @@ public:
 		case GameLogic::EColor::Green:
 			return FLinearColor(0.f, 1.f, 0.f, 1.f);
 		case GameLogic::EColor::Red:
-			return FLinearColor(1.f, 0.2f, 0.f, 1.f);
+			return FLinearColor(1.f, 0.f, 0.f, 1.f);
+		case GameLogic::EColor::Blue:
+			return FLinearColor(0.f, 0.f, 1.f, 1.f);
+		case GameLogic::EColor::White:
+			return FLinearColor::White;
 		case GameLogic::EColor::None:
 			return FLinearColor::White;
 		}
