@@ -43,7 +43,7 @@ protected:
 
 	// Another way to do this is just to set InitialLifeSpan (destroy after time instead of distance)
 	UPROPERTY()
-	float DestroyAfterTravelDist = 100000.f;
+	float DestroyAfterTravelDist = 600000.f;
 	FVector StartLoc;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

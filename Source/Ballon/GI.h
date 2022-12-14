@@ -6,6 +6,29 @@
 #include "Engine/GameInstance.h"
 #include "GI.generated.h"
 
+USTRUCT(BlueprintType)
+struct FLevelHiScore
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bLocked;
+
+	UPROPERTY(BlueprintReadOnly)
+	float BestTime;
+
+	UPROPERTY(BlueprintReadOnly)
+	float BestAccuracy;
+
+	FLevelHiScore() { bLocked = true; BestTime = -1.f; BestAccuracy = -1.f; }
+	FLevelHiScore(const bool bInLocked, const float InBestTime, const float InBestAccuracy)
+	{
+		bLocked = bInLocked;
+		BestTime = InBestTime;
+		BestAccuracy = InBestAccuracy;
+	}
+};
+
 /**
  * 
  */
@@ -17,6 +40,14 @@ class BALLON_API UGI : public UGameInstance
 public:
 	UGI();
 
+	UFUNCTION(BlueprintCallable)
+	FLevelHiScore GetLevelHiScore(const FString LevelName);
+
+	UFUNCTION(BlueprintCallable)
+	void SaveLevelScoreIfHighest(const FString LevelName, const FLevelScore Score);
+	
+
+	////////////////// SOUND
 	// Returns false and has no effect if music is already playing
 	UFUNCTION(BlueprintCallable, Category = "Sound")
 	bool PlayBGMusic();
@@ -31,6 +62,11 @@ public:
 	void PlayShootSound();
 
 protected:
+	TMap<FString, FLevelHiScore> HiScores;
+	void LoadHiScores();
+
+	
+	////////////////// SOUND
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
 	USoundBase* BGMusicWorldA;
 

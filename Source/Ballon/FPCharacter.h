@@ -80,6 +80,9 @@ protected:
 	float ShotFullChargeSeconds = 2.f;
 	float ShotChargeRate = (ShotMaxSpeed - ShotMinSpeed) / ShotFullChargeSeconds;
 	bool bCharging = false;
+	float MuzzleRotateAccel = 50.f;
+	float MuzzleCurrRotatingSpeed = 0.f;
+	float MuzzleMaxRotateSpeed = ShotFullChargeSeconds * MuzzleRotateAccel;
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateGunMeshColor();
@@ -103,6 +106,7 @@ public:
 	void ReleaseShot();
 	void StartShotCharge();
 
+	UFUNCTION(BlueprintCallable)
 	void SetProjectileColor(GameLogic::EColor InColor);
 
 	UFUNCTION(BlueprintImplementableEvent)

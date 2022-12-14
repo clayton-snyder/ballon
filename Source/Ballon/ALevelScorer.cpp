@@ -3,6 +3,7 @@
 
 #include "ALevelScorer.h"
 
+#include "BallonGameModeBase.h"
 #include "FPCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -27,7 +28,7 @@ void ALevelScorer::BeginPlay()
 
 	FIncrementNumPoppedDelegate NumPoppedDelegate;
 	NumPoppedDelegate.BindUObject(this, &ALevelScorer::IncrementNumPopped);
-	
+
 
 	TArray<AActor*> Poppables;
 	UGameplayStatics::GetAllActorsWithTag(this, UConstants::TagPoppable, Poppables);
@@ -60,7 +61,7 @@ FLevelScore ALevelScorer::GetScore() const
 	Score.ShotsFired = ShotsFired;
 	Score.TotalPoppable = TotalPoppable;
 	Score.NumPopped = NumPopped;
-	
+
 	return Score;
 }
 
@@ -73,7 +74,33 @@ void ALevelScorer::Tick(float DeltaTime)
 
 void ALevelScorer::UpdatePlayerHUD()
 {
-	FString Progress = FString::FromInt(NumPopped) + "/" + FString::FromInt(TotalPoppable);
-	FString LevelName = UGameplayStatics::GetCurrentLevelName(this);
+	const FString Progress = FString::FromInt(NumPopped) + "/" + FString::FromInt(TotalPoppable);
+	const FString LevelName = UGameplayStatics::GetCurrentLevelName(this);
 	Player->UpdateHUD(Progress, LevelName);
+}
+
+
+FLevelScore ALevelScorer::CompareScores(const FString LevelName, FLevelScore ScoreA, FLevelScore ScoreB)
+{
+	const FLevelReqs PassingScore = ABallonGameModeBase::GetLevelReqs(LevelName);
+	const float AccA = ScoreA.ShotsFired == 0 ? 0.0f : static_cast<float>(ScoreA.NumPopped) / ScoreA.ShotsFired * 100;
+	const float AccB = ScoreB.ShotsFired == 0 ? 0.0f : static_cast<float>(ScoreB.NumPopped) / ScoreB.ShotsFired * 100;
+
+	const bool ScoreAPassed =
+		(ScoreA.NumPopped == ScoreA.TotalPoppable)
+			&& ScoreA.TimeElapsed <= PassingScore.Time
+			&& AccA >= PassingScore.Accuracy;
+
+	const bool ScoreBPassed =
+		(ScoreB.NumPopped == ScoreB.TotalPoppable)
+			&& ScoreB.TimeElapsed <= PassingScore.Time
+			&& AccB >= PassingScore.Accuracy;
+
+	if (ScoreAPassed && !ScoreBPassed) return ScoreA;
+	if (ScoreBPassed && !ScoreAPassed) return ScoreB;
+
+	if (ScoreA.TimeElapsed < ScoreB.TimeElapsed) return ScoreA;
+	if (ScoreB.TimeElapsed > ScoreA.TimeElapsed) return ScoreB;
+	if (AccA > AccB) return ScoreA;
+	return ScoreB;
 }

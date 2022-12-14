@@ -44,6 +44,8 @@ public:
 	UFUNCTION()
 	void IncrementNumPopped();
 
+	static FLevelScore CompareScores(FString LevelName, FLevelScore ScoreA, FLevelScore ScoreB);
+
 protected:
 	DECLARE_DELEGATE(FIncrementShotsFiredDelegate);
 	DECLARE_DELEGATE(FIncrementNumPoppedDelegate);

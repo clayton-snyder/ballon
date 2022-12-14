@@ -38,7 +38,7 @@ public:
 	FName GetNextLevel(const FString &CurrLevel);
 	
 	UFUNCTION(BlueprintCallable)
-	FLevelReqs GetLevelReqs(const FString &LevelName);
+	static FLevelReqs GetLevelReqs(const FString &LevelName);
 
 protected:
 	// UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")

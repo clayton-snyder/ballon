@@ -24,16 +24,16 @@ C:\Users\Clayton\dev\games\ballon\Plugins\Developer\RiderLink\Intermediate\Build
 /I C:\Users\Clayton\dev\games\ballon\Plugins\Developer\RiderLink\Source\RiderLink\Public\Model\RdEditorProtocol
 /I C:\Users\Clayton\dev\games\ballon\Plugins\Developer\RiderLink\Source\RiderLink\Public
 /I C:\Users\Clayton\dev\games\ballon\Plugins\Developer\RiderLink\Source\RiderBlueprint\Public
-/I ThirdParty\mimalloc\include
-/I "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\INCLUDE"
-/I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"
+/external:W0
+/external:I ThirdParty\mimalloc\include
+/external:I "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\INCLUDE"
+/external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt"
+/external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"
+/external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um"
+/external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"
 /FI"C:\Users\Clayton\dev\games\ballon\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Definitions.h"
 /Fo"C:\Users\Clayton\dev\games\ballon\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.lc.obj"
-/sourceDependencies"C:\Users\Clayton\dev\games\ballon\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.lc.json"
+/sourceDependencies"C:\Users\Clayton\dev\games\ballon\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.dep.lc.json"
 /Zc:inline
 /nologo
 /Oi
@@ -50,6 +50,7 @@ C:\Users\Clayton\dev\games\ballon\Plugins\Developer\RiderLink\Intermediate\Build
 /source-charset:utf-8
 /execution-charset:utf-8
 /Ob2
+/fastfail
 /Ox
 /Ot
 /GF
