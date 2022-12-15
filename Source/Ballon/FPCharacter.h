@@ -22,7 +22,7 @@ public:
 
 protected:
 	////  REFS  ////
-	class UGI* GIRef;
+	class UGI* GI;
 	
 	////  PROPERTIES  ////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Color Logic")

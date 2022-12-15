@@ -48,10 +48,7 @@ void ABallonGameModeBase::DisplayLevelEndWidget(const FLevelScore& Score, bool b
 	NewWidget->AddToViewport();
 
 	APlayerController* Controller = UGameplayStatics::GetPlayerController(this, 0);
-	UGameplayStatics::GetPlayerPawn(this, 0)->DisableInput(Controller);
-	UGameplayStatics::SetGamePaused(this, true);
-	Controller->bShowMouseCursor = true;
-	NewWidget->bIsFocusable = true;
+	Controller->SetInputMode(FInputModeUIOnly());
 	NewWidget->SetFocus();
 }
 

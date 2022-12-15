@@ -40,8 +40,12 @@ void AFPCharacter::BeginPlay()
 	check(GEngine != nullptr);
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, "FPCharacter BeginPlay");
 
-	GIRef = Cast<UGI>(GetGameInstance());
-	check(GIRef != nullptr);
+	GI = Cast<UGI>(GetGameInstance());
+	check(GI != nullptr);
+
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	check(PlayerController != nullptr);
+	PlayerController->SetInputMode(FInputModeGameOnly());
 }
 
 // Called every frame
@@ -100,7 +104,7 @@ void AFPCharacter::StartShotCharge()
 void AFPCharacter::ReleaseShot()
 {
 	// Play sound first to be as responsive as possible
-	GIRef->PlayShootSound();
+	GI->PlayShootSound();
 	
 	const FTransform Transform = FTransform(ProjectileSpawn->GetComponentRotation(),
 	                                        ProjectileSpawn->GetComponentLocation());

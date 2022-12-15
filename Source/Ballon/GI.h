@@ -40,6 +40,13 @@ class BALLON_API UGI : public UGameInstance
 public:
 	UGI();
 
+	// These volume variables are only saved here so that the settings menu slider can init correctly
+	UPROPERTY(BlueprintReadWrite)
+	float VolumeSFX = 1.0;
+
+	UPROPERTY(BlueprintReadWrite)
+	float VolumeMusic = 1.0;
+
 	UFUNCTION(BlueprintCallable)
 	FLevelHiScore GetLevelHiScore(const FString LevelName);
 
