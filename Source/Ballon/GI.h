@@ -56,16 +56,19 @@ public:
 
 	////////////////// SOUND
 	// Returns false and has no effect if music is already playing
-	UFUNCTION(BlueprintCallable, Category = "Sound")
+	UFUNCTION(BlueprintCallable, Category="Sound")
 	bool PlayBGMusic();
 
-	UFUNCTION(BlueprintCallable, Category = "Sound")
+	UFUNCTION(BlueprintCallable, Category="Sound")
+	bool PlayLobbyMusic();
+
+	UFUNCTION(BlueprintCallable, Category="Sound")
 	void PlayFailSound();
 
-	UFUNCTION(BlueprintCallable, Category = "Sound")
+	UFUNCTION(BlueprintCallable, Category="Sound")
 	void PlayDingSound();
 
-	UFUNCTION(BlueprintCallable, Category = "Sound")
+	UFUNCTION(BlueprintCallable, Category="Sound")
 	void PlayShootSound();
 
 protected:
@@ -74,18 +77,21 @@ protected:
 
 	
 	////////////////// SOUND
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Sound")
 	USoundBase* BGMusicWorldA;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Sound")
+	USoundBase* LobbyMusic;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool IsMusicPlaying;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Sound")
 	USoundBase* FailSound;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Sound")
 	USoundBase* DingSound;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Sound")
 	USoundBase* ShootSound;
 };

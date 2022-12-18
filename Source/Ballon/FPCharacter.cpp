@@ -38,7 +38,7 @@ void AFPCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	check(GEngine != nullptr);
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, "FPCharacter BeginPlay");
+	// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, "FPCharacter BeginPlay");
 
 	GI = Cast<UGI>(GetGameInstance());
 	check(GI != nullptr);
@@ -58,8 +58,8 @@ void AFPCharacter::Tick(const float DeltaTime)
 
 	check(GEngine != nullptr);
 	// const float Length = (Movement * MoveSpeed).Length();
-	GEngine->AddOnScreenDebugMessage(23, 1.0f, FColor::Emerald,
-	                                 FString::Printf(TEXT("Speed: %.3f"), GetVelocity().Length()));
+	// GEngine->AddOnScreenDebugMessage(23, 1.0f, FColor::Emerald,
+	//                                  FString::Printf(TEXT("Speed: %.3f"), GetVelocity().Length()));
 
 	if (bCharging)
 	{

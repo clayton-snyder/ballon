@@ -12,7 +12,7 @@ void ABallonGameModeBase::StartPlay()
 	Super::StartPlay();
 
 	check(GEngine != nullptr);
-	GEngine->AddOnScreenDebugMessage(-1, 500.0f, FColor::Yellow, TEXT("This is BallonGameMode."));
+	// GEngine->AddOnScreenDebugMessage(-1, 500.0f, FColor::Yellow, TEXT("This is BallonGameMode."));
 }
 
 void ABallonGameModeBase::DisplayLevelEndWidget(const FLevelScore& Score, bool bPlayerMatchColor)
@@ -56,8 +56,8 @@ FName ABallonGameModeBase::GetNextLevel(const FString& CurrLevel)
 {
 	if (CurrLevel == "Sandbox") return "Sandbox2";
 	if (CurrLevel == "Sandbox2") return "Forest";
-	if (CurrLevel == "Forest") return "Lobby";
-	if (CurrLevel == "Mountain") return "Sandbox";
+	if (CurrLevel == "Forest") return "Mountain";
+	if (CurrLevel == "Mountain") return "Lobby";
 	UE_LOG(LogTemp, Error, TEXT("UNKNOWN LEVEL NAME: %s"), *CurrLevel);
 	return "UNKNOWN";
 }
@@ -67,7 +67,7 @@ FLevelReqs ABallonGameModeBase::GetLevelReqs(const FString& LevelName)
 {
 	if (LevelName == "Sandbox") return FLevelReqs(100.f, 10.f);
 	if (LevelName == "Sandbox2") return FLevelReqs(100.f, 7.5f);
-	if (LevelName == "Forest") return FLevelReqs(90.f, 15.f);
+	if (LevelName == "Forest") return FLevelReqs(90.f, 16.5f);
 	if (LevelName == "Mountain") return FLevelReqs(100.f, 65.f);
 
 	UE_LOG(LogTemp, Error, TEXT("Missing GetLevelReqs case for LevelName: %s"), *LevelName);

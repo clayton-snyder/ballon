@@ -15,7 +15,7 @@ UGI::UGI()
 // TODO: Load this from a save file
 void UGI::LoadHiScores()
 {
-	HiScores.Add("Forest", FLevelHiScore());
+	HiScores.Add("Forest", FLevelHiScore(false, 0.0f, 0.0f));
 	HiScores.Add("Mountain", FLevelHiScore());
 	HiScores.Add("Desert", FLevelHiScore());
 	HiScores.Add("Cliffs", FLevelHiScore());
@@ -58,6 +58,21 @@ bool UGI::PlayBGMusic()
 	check(BGMusicAudioComponent != nullptr);
 	BGMusicAudioComponent->Play();
 	IsMusicPlaying = true;
+	
+	return true;
+}
+
+bool UGI::PlayLobbyMusic()
+{
+	if (IsMusicPlaying) return false;
+
+	check(LobbyMusic != nullptr);
+	UAudioComponent* BGMusicAudioComponent = UGameplayStatics::SpawnSound2D(
+		this, LobbyMusic, 1, 1, 0,
+		nullptr, false, true);
+	check(BGMusicAudioComponent != nullptr);
+	BGMusicAudioComponent->Play();
+	// IsMusicPlaying = true;
 	
 	return true;
 }
