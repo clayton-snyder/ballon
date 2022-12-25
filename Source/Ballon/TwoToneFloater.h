@@ -42,6 +42,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Color Logic")
 	UMaterial* ErrMat;
+
+	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* ConfettiParticles;
 	
 	
 	////////////// STRUCTURE //////////////

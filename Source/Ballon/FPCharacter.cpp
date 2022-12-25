@@ -4,11 +4,9 @@
 #include "FPCharacter.h"
 
 #include "Camera/CameraComponent.h"
-#include "Particles/ParticleSystemComponent.h"
 #include "GI.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
-#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AFPCharacter::AFPCharacter()

@@ -16,8 +16,6 @@ class BALLON_API AShot : public ABaseProjectile
 
 public:
 	AShot();
-
-	// virtual void SetColor(const GameLogic::EColor InColor) override;
 	
 protected:
 	void BeginPlay() override;
@@ -28,8 +26,6 @@ protected:
 		UPrimitiveComponent* StruckComp,
 		FVector NormalImpulse,
 		const FHitResult &HitResult) override;
-
-private:
-	// TMap<GameLogic::EColor, UMaterialInstance*> EColorToMatInst;
+	
 	
 };

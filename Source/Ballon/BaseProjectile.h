@@ -38,6 +38,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* Mesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	class UNiagaraComponent* TrailParticles;
+
 	UPROPERTY(VisibleAnywhere)
 	UProjectileMovementComponent* Movement;
 

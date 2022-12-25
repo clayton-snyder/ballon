@@ -2,7 +2,9 @@
 
 
 #include "BaseProjectile.h"
-#include "Components/SphereComponent.h"
+
+#include "NiagaraComponent.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 ABaseProjectile::ABaseProjectile()
@@ -13,6 +15,9 @@ ABaseProjectile::ABaseProjectile()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	Mesh->SetNotifyRigidBodyCollision(true);
 	RootComponent = Mesh;
+
+	TrailParticles = CreateDefaultSubobject<UNiagaraComponent>("TrailParticles");
+	TrailParticles->SetupAttachment(RootComponent);
 
 	Movement = CreateDefaultSubobject<UProjectileMovementComponent>("Movement");
 }
@@ -52,6 +57,7 @@ void ABaseProjectile::OnHit(
 	UE_LOG(LogTemp, Display, TEXT("OnHit from BaseProjectile. Struck: %s"), *StruckActor->GetActorNameOrLabel());
 
 	// Splatter
+	Mesh->SetVisibility(false);
 	//Destroy();
 }
 
